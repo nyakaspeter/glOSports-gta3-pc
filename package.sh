@@ -11,4 +11,5 @@ GLOS=../goodluckOS-mali-driver/glos
 rm -rf out/ports out/.local && unzip -q -o out/re3-port.zip -d out
 rm -rf out/ports/gta3-pc/glos && mkdir -p out/ports/gta3-pc/glos/lib
 cp "$GLOS"/glos-gpu "$GLOS"/glos-gpu-switch "$GLOS"/mali.ko "$GLOS"/glos_fbfix.ko out/ports/gta3-pc/glos/ && cp "$GLOS"/lib/* out/ports/gta3-pc/glos/lib/
+rm -rf out/ports/gta3-pc/licenses && cp -R licenses out/ports/gta3-pc/licenses
 ls out/ports/gta3-pc out/ports/gta3-pc/glos

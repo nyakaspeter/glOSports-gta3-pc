@@ -19,15 +19,16 @@ Recommended in-game settings: **Vsync on, Frame Limiter on** (steady 30, dips
 to 20 in the heaviest spots), Trails off, Draw Distance to taste. Radio: **L1**
 in a car (controller "Setup 1").
 
-Controls: the build defaults to the **Classic** control method (the PS2 layout:
-the stick turns the player). "Standard" is the keyboard-and-mouse layout, in
-which left and right make the player strafe sideways; it is what the engine
-chooses on its own, and a `Method = 0` saved in the ini brings it back
-(Controller Setup in the menu, or `Method = 1`).
-**Free Camera** is on by default too (Display Setup): the right stick orbits
-the camera on foot and follows the car San Andreas-style; off, the right
-stick is the PS2's first-person look. Targets: hold R1 to lock on, L2 / R2
-(the lower shoulder buttons) cycle them.
+Controls: the patches leave every in-game default as the engine has it,
+except Trails (off). So the Control Method starts as **Standard**, the PC
+layout (left and right make the player strafe sideways), and Free Camera
+starts off. R1 is Target in both methods (`PED_LOCK_TARGET = joy:8`, the right
+bumper), but lock-on only exists in **Classic**, the PS2 layout (the stick
+turns the player): `FindWeaponLockOnTarget` runs only while the mouse camera
+is off, and Standard turns it on. In Classic, while locked on, L2 / R2 (the
+lower shoulder buttons) cycle targets. Classic: Controller Setup → Control
+Method (`Method = 1` in the ini). **Free Camera** (Display Setup) makes the
+right stick orbit the camera on foot and follow the car San Andreas-style.
 
 ## Game files
 
@@ -112,6 +113,10 @@ Buttons are mapped by position (Xbox-style A = bottom) in `start.sh`.
 - GLES 2.0 texture rules: unsized formats (`GL_RGBA`, not `GL_RGBA8`), no
   `GL_TEXTURE_MAX_LEVEL`, an incomplete mip chain samples black: every
   texture was black at first.
+- Trails (the motion blur) is off by default. Without a `gta3.set` (a fresh
+  install) GTA III's `LoadSettings` turns it on, and its frame copy doesn't get
+  the frame on this driver: stale texture memory was blended over the whole
+  screen. Vice City already starts with it off.
 - The texture conversion (the "converting textures" cache) reads textures
   back from the GPU, and GLES 2 can only read mip level 0; librw cut the
   smaller levels out of it, so every distant texture used a cropped corner
