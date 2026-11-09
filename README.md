@@ -1,4 +1,4 @@
-# glOSports-re3 — GTA III (re3) on the GA36-MB
+# glOSports-gta3-pc — GTA III (re3) on the GA36-MB
 
 GTA III running natively through the [re3](https://github.com/Cai1Hsu/re3)
 reverse-engineered engine (fork `Cai1Hsu/re3`, branch `main` at `19d2dea`), built for
@@ -31,7 +31,7 @@ stick is the PS2's first-person look. Targets: hold R1 to lock on, L2 / R2
 
 ## Game files
 
-From the PC game's folder, copied whole into `/home/player/ports/re3/`:
+From the PC game's folder, copied whole into `/home/player/ports/gta3-pc/`:
 
 | Folder | Needed |
 |---|---|
@@ -44,7 +44,7 @@ From the PC game's folder, copied whole into `/home/player/ports/re3/`:
 | `TEXT/` | no: the port ships its own `TEXT/` (every language) |
 | `movies/`, `ReadMe/`, `gta3.exe`, the `.dll`s, `mss/` | no (re3's Linux build doesn't play the intro movies) |
 
-## The game folder on the console (`/home/player/ports/re3/`)
+## The game folder on the console (`/home/player/ports/gta3-pc/`)
 
 | | |
 |---|---|
@@ -53,7 +53,7 @@ From the PC game's folder, copied whole into `/home/player/ports/re3/`:
 | `alsoft.conf` | OpenAL reads it from the game folder by itself |
 | `glos/` | the ARM driver set from `goodluckOS-mali-driver` |
 | `start.sh` | controller mapping and tuning, then `exec ./glos/glos-gpu run mali ./re3` |
-| `icon.png`, `~/.local/share/applications/re3.puppy` | the launcher entry |
+| `icon.png`, `~/.local/share/applications/gta3-pc.puppy` | the launcher entry |
 | `models/txd.img` + `txd.dir` | the texture cache the game builds on its first start ("converting textures"); delete both to rebuild it |
 | `userfiles/` | saves (never touched by tooling); the rest is your game data (above) |
 
@@ -62,11 +62,11 @@ From the PC game's folder, copied whole into `/home/player/ports/re3/`:
 ```sh
 docker buildx build --output type=local,dest=./out . && ./package.sh
 ```
-`out/ports/re3/` is then the complete folder (the game data excluded):
-copy it over the console's, and `out/.local/share/applications/re3.puppy` next
+`out/ports/gta3-pc/` is then the complete folder (the game data excluded):
+copy it over the console's, and `out/.local/share/applications/gta3-pc.puppy` next
 to the other launcher entries. To update only the binary:
-`python3 ../goodluckOS-tools/mtp_send.py / out/ports/re3/re3`, then over the console
-`appctl kill-application; mv /home/player/re3 /home/player/ports/re3/re3`.
+`python3 ../goodluckOS-tools/mtp_send.py / out/ports/gta3-pc/re3`, then over the console
+`appctl kill-application; mv /home/player/re3 /home/player/ports/gta3-pc/re3`.
 
 The default build is LTO + profile-guided (profile in `pgo/`) with
 `-fno-strict-aliasing` (without it the optimiser exposed type-punning in the
@@ -76,13 +76,13 @@ Plain build: `--build-arg LTO=0 --build-arg PGO=off`.
 
 | Path | What |
 |---|---|
-| `Dockerfile` | clones the fork, applies `patch-re3.sh` and `shim/`, cross-compiles, zips `ports/re3/` |
+| `Dockerfile` | clones the fork, applies `patch-re3.sh` and `shim/`, cross-compiles, zips `ports/gta3-pc/` |
 | `patch-re3.sh` | every change to the engine and librw, as text substitutions applied at build time |
 | `shim/` | `glfw_sdl2_shim.cpp` (the GLFW subset re3 uses, on SDL2: the fork only has a GLFW front end and GLFW can't do KMS/DRM), `gl3fbdev.cpp` (EGL on `/dev/fb0` through ARM's libraries, opened by name), `gl3thread.cpp` (the GL command thread), `glos_fps.cpp`, `glos_prof.cpp`, `glos_scale.cpp` |
-| `start.sh`, `re3.puppy`, `icon.png`, `alsoft.conf` | as shipped |
+| `start.sh`, `gta3-pc.puppy`, `icon.png`, `alsoft.conf` | as shipped |
 | `pgo/` | the training profile |
 | `tools/` | `bench.sh` (relaunch with FPS logging, measure), `profile.sh` (sampling profiler, hottest functions per library), `pgo.sh`, the GL-thread generator |
-| `glos/testing/` | console-side tools, copied over only when needed (`../goodluckOS-tools/testing-sync.sh re3`) |
+| `glos/testing/` | console-side tools, copied over only when needed (`../goodluckOS-tools/testing-sync.sh gta3-pc`) |
 
 ## Tuning (`start.sh`; everything is off in the binary itself)
 

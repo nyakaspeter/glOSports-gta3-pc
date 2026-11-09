@@ -1,6 +1,0 @@
-[Entry]
-CATEGORY=Games
-NAME=Grand Theft Auto III
-DESCRIPTION=Running natively via re3
-COMMAND=/home/player/ports/re3/start.sh
-ICON=/home/player/ports/re3/icon.png

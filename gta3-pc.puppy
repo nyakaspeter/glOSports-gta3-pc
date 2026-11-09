@@ -1,0 +1,6 @@
+[Entry]
+CATEGORY=Games
+NAME=Grand Theft Auto III (PC)
+DESCRIPTION=Running natively via re3
+COMMAND=/home/player/ports/gta3-pc/start.sh
+ICON=/home/player/ports/gta3-pc/icon.png
